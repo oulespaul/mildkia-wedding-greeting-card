@@ -1,39 +1,51 @@
 "use client";
 
-import React from "react";
-import { fabric } from "fabric";
+import { useState } from "react";
+import { useDraw } from "../hooks/useDraw";
+import { ChromePicker } from "react-color";
 
-const GreetingCard = () => {
-  const fabricRef = React.useRef(null);
-  const canvasRef = React.useRef(null);
+const GreetingCard = ({}) => {
+  const [color, setColor] = useState("#000");
+  const { canvasRef, onMouseDown, clear } = useDraw(drawLine);
 
-  React.useEffect(() => {
-    console.log(document.getElementById("contCanvasLogo").clientHeight)
-    console.log(document.getElementById("contCanvasLogo").clientWidth)
-    const initFabric = () => {
-      fabricRef.current = new fabric.Canvas(canvasRef.current, {
-        isDrawingMode: true,
-      });
-      fabricRef.current.setHeight(
-        document.getElementById("contCanvasLogo").clientHeight - 200
-      );
-      fabricRef.current.setWidth(
-        document.getElementById("contCanvasLogo").clientWidth - 70
-      );
-    };
+  function drawLine({ prevPoint, currentPoint, ctx }) {
+    const { x: currX, y: currY } = currentPoint;
+    const lineColor = color;
+    const lineWidth = 5;
 
-    const disposeFabric = () => {
-      fabricRef.current.dispose();
-    };
+    let startPoint = prevPoint ?? currentPoint;
+    ctx.beginPath();
+    ctx.lineWidth = lineWidth;
+    ctx.strokeStyle = lineColor;
+    ctx.moveTo(startPoint.x, startPoint.y);
+    ctx.lineTo(currX, currY);
+    ctx.stroke();
 
-    initFabric();
+    ctx.fillStyle = lineColor;
+    ctx.beginPath();
+    ctx.arc(startPoint.x, startPoint.y, 2, 0, 2 * Math.PI);
+    ctx.fill();
+  }
 
-    return () => {
-      disposeFabric();
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} className="border-2 border-gray-400 border-dotted" />;
+  return (
+    <div className="w-screen h-screen flex flex-col justify-center items-center">
+      <canvas
+        ref={canvasRef}
+        onMouseDown={onMouseDown}
+        width={400}
+        height={400}
+        className="border border-black rounded-md"
+      />
+      <ChromePicker color={color} onChange={(e) => setColor(e.hex)} />
+      <button
+        type="button"
+        className="p-2 rounded-md border border-black"
+        onClick={clear}
+      >
+        Clear
+      </button>
+    </div>
+  );
 };
 
 export default GreetingCard;

@@ -66,14 +66,14 @@ const GreetingCard = () => {
 
         <div className="flex">
           <button
-            className="rounded-full h-full shadow-sm bg-blue-100 mr-4 text-gray-500 px-8 hover:border-4 hover:border-gray-300"
+            className="rounded-full h-full shadow-sm bg-blue-100 mr-2 text-gray-500 px-4 hover:border-4 hover:border-gray-300"
             onClick={() => canvasRef.current.clearCanvas()}
           >
             Clear
           </button>
 
           <button
-            className="rounded-full h-full shadow-sm bg-yellow-200 text-gray-500 px-8 hover:border-4 hover:border-gray-300"
+            className="rounded-full h-full shadow-sm bg-yellow-200 text-gray-500 px-4 hover:border-4 hover:border-gray-300"
             onClick={onExportImageHandler}
           >
             Save

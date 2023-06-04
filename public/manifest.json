@@ -1,6 +1,6 @@
 {
-  "name": "next-pwa",
-  "short_name": "next-pwa",
+  "name": "mildkia-wedding-greeting-card",
+  "short_name": "mildkia-greeting",
   "display": "standalone",
   "orientation": "portrait",
   "theme_color": "#FFFFFF",

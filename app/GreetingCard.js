@@ -14,19 +14,35 @@ const GreetingCard = () => {
 
   const canvasRef = useRef(null);
 
-  const styles = {
-    borderRadius: "1rem",
+  const styles = {};
+
+  const saveImage = async (base64Image) => {
+    try {
+      const response = await fetch("/api/images", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ image: base64Image }),
+      });
+
+      if (response.status === 200) {
+        const link = document.createElement("a");
+
+        link.href = base64Image;
+        link.download = "mildkia-wedding-greeting-card.png";
+        link.click();
+      }
+    } catch (error) {
+      console.log("da: error", error);
+    }
   };
 
   const onExportImageHandler = () => {
-    const link = document.createElement("a");
-
     canvasRef.current
       .exportImage("png")
       .then((data) => {
-        link.href = data;
-        link.download = "mildkia-wedding-greeting-card.png";
-        link.click();
+        saveImage(data);
       })
       .catch((e) => {
         console.log(e);
@@ -36,14 +52,19 @@ const GreetingCard = () => {
   return (
     <div className="container lg:px-56">
       <div className="flex w-full justify-center bg-[#FDF6EB]">
-        <Image src="/mk-logo.png" alt="logo" width={100} height={100} />
+        <Image
+          src="/icons/mk-icon-512x512.png"
+          alt="logo"
+          width={100}
+          height={100}
+        />
       </div>
 
-      <div id="contCanvasLogo" className="flex rounded-xl shadow-xl h-[70vh]">
+      <div id="contCanvasLogo" className="flex rounded-xl shadow-xl h-[65vh]">
         <ReactSketchCanvas
           ref={canvasRef}
           style={styles}
-          strokeWidth={4}
+          strokeWidth={3}
           strokeColor={penColor}
           width="100%"
           height="100%"
@@ -64,19 +85,19 @@ const GreetingCard = () => {
           ))}
         </div>
 
-        <div className="flex">
+        <div className="flex flex-col md:flex-row">
           <button
-            className="rounded-full h-full shadow-sm bg-blue-100 mr-2 text-gray-500 px-4 hover:border-4 hover:border-gray-300"
+            className="rounded-full h-10 shadow-sm bg-blue-100 mr-2 mb-2 text-gray-500 px-4 hover:border-4 hover:border-gray-300"
             onClick={() => canvasRef.current.clearCanvas()}
           >
             Clear
           </button>
 
           <button
-            className="rounded-full h-full shadow-sm bg-yellow-200 text-gray-500 px-4 hover:border-4 hover:border-gray-300"
+            className="rounded-full h-10 shadow-sm bg-yellow-200 text-gray-500 px-4 hover:border-4 hover:border-gray-300"
             onClick={onExportImageHandler}
           >
-            Save
+            Send
           </button>
         </div>
       </div>

@@ -30,3 +30,11 @@ export async function POST(request) {
     status: 200,
   });
 }
+
+export async function GET(request) {
+  const filenames = fs.readdirSync(CARD_PATH);
+
+  return new NextResponse(filenames, {
+    status: 200,
+  });
+}

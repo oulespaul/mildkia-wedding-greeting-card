@@ -42,7 +42,12 @@ const GreetingCard = () => {
     canvasRef.current
       .exportImage("png")
       .then((data) => {
-        saveImage(data);
+        const link = document.createElement("a");
+
+        link.href = data;
+        link.download = "mildkia-wedding-greeting-card.png";
+        link.click();
+        canvasRef.current.clearCanvas();
       })
       .catch((e) => {
         console.log(e);

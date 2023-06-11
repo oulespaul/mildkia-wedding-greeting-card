@@ -1,5 +1,7 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
+import 'animate.css/animate.min.css';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 const inter = Inter({ subsets: ["latin"] });
 
